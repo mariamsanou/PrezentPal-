@@ -1,34 +1,43 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {  Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from 'react-router-dom';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-import WelcomUser from './Welcomepage';
+const cors = require('cors')
+const express = require('express');
+const app = express();
 
 
+app.use(express.json());
+app.use(cors())
+app.listen(9000, () =>{
+    console.log(`Server Started at ${9000}`)
+})
 
-//WelcomUser to be the first page so it allows the user to be saved and allow signing out
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <>
-    
-     <Route path="/" element={<WelcomUser />} />
+const mongoose = require('mongoose');
+
+const mongoString = "mongodb+srv://prezentpal:prezentpal@cluster0.szggryc.mongodb.net/"
+mongoose.connect(mongoString)
+const database = mongoose.connection
+
+database.on('error', (error) => console.log(error))
+database.once('connected', () => console.log('Database Connected'))
+
+
+app.get('/getUsers', async (req, res) => {
+    try {
+        const userList = await User.find({}, {firstName:1, lastName:1});
+        res.send(userList)
+    }
+    catch (error) {
+        res.status(500).send(error)
+    }
+})
+
+app.post('/createPartners', async (req, res) => {
+    try {
+        
+    }
+    catch (error){
+        res.status(500).send(error)
+    }
+})
 
 
 
-     </>
-  )
-)
-root.render(
-  <React.StrictMode>
-    <RouterProvider router = {router}>
-    <App />
-    </RouterProvider>
-  </React.StrictMode>
-);
 
-reportWebVitals();

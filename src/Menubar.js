@@ -22,7 +22,7 @@ function Menubar( ) {
                                 <Link to="/dashboard">Dashboard</Link>
                             </div>
                             <div>
-                                <Link to="/viewEvent">View Event</Link>
+                                <Link to="/ViewEvent">View Event</Link>
                             </div>
                             <div>
                                 <Link to="/createWishlist">Create Wishlist</Link>
@@ -39,12 +39,7 @@ function Menubar( ) {
                             <div>
                                 <Link to="/signup">Signup</Link>
                             </div>
-                            <div>
-                                <Link to="/wishlist">Wishlist</Link>
-                            </div>
-                            <div>
-                                <Link to="/moreInfo">More Info</Link>
-                            </div>
+                            
                         </>
                     )}
                 </div>

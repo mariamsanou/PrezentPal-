@@ -1,33 +1,20 @@
-.wishlist-container {
-    width: 80%;
-    margin: auto;
-}
-
-.wishlist-items {
-    display: grid;
-    grid-template-columns: 1fr 2fr auto;
-    gap: 10px;
-    border-top: 1px solid #000;
-}
-
-.wishlist-item {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
-    display: contents;
-}
-
-.wishlist-item-name,
-.wishlist-item-description,
-.wishlist-item-interest {
-    padding: 10px;
-    background-color: #f9f9f9;
-}
-
-.wishlist-item-name {
-    font-weight: bold;
-}
-
-.wishlist-item-interest {
-    text-align: center;
-    background-color: #e0e0e0;
-}
+.table-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 80%; /* Adjust the width of the table as needed */
+  }
+  
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #f2f2f2;
+  }
+  

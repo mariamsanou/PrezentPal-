@@ -1,5 +1,8 @@
 import {React, useState, useEffect} from "react";
 import axios from 'axios';
+import './Wishlist.css';
+import Menubar from "../Menubar";
+import RemoveItem from "./RemoveWishItem";
 
 const ViewWishlist = () => {
     const [items, setWishlist] = useState([]);
@@ -15,28 +18,28 @@ const ViewWishlist = () => {
 
   return (
     <div className="container">
+        <Menubar />
                 <h2 className="card-title text-center">Wishlist</h2>
-                <p>lol</p>
                 <table>
                 <thead>
                     <tr>
-                        {/* <th>Project Name</th>
+                        <th>Item Name</th>
                         <th>Description</th>
-                        <th>Manager</th>
-                        <th>Owner</th>
-                        <th>Team</th> */}
+                        <th>Price</th>
+                        <th>Link</th>
+                        <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {items.map((items, index) => (
+                    {items.map((items, index) => (
                         <tr key={index}>
-                            <td>{items.items_name}</td>
-                            <td>{items.description}</td>
-                            <td>{items.owner_details.firstName}</td>
-                            <td>{items.manager_details.firstName}</td>
-                            <td>{items.teams_details.team_name}</td>
+                            <td>{items.item_name}</td>
+                            <td>{items.item_desc}</td>
+                            <td>{items.item_price}</td>
+                            <td>{items.item_link}</td>
+                            <td> <RemoveItem /></td>
                         </tr>
-                    ))} */}
+                    ))}
                 </tbody>
             </table>
     </div>

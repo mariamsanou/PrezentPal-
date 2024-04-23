@@ -40,6 +40,9 @@ function Menubar( ) {
                                 <Link to="/signup">Signup</Link>
                             </div>
                             <div>
+                                <Link to="/wishlist">Wishlist</Link>
+                            </div>
+                            <div>
                                 <Link to="/moreInfo">More Info</Link>
                             </div>
                         </>

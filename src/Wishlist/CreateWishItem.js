@@ -4,11 +4,13 @@ import axios from 'axios';
 const CreateWishItem = () => {
     const [item_name, setWishItemName] = useState('');
     const [item_desc, setWishItemDescription] = useState('');
-    const [prod_owner_id, setProductOwner] = useState('');
-
-    const handleCreateWishItem = (event, item_name, item_desc, prod_owner_id,) => {
+    const [item_price, setWishItemPrice] = useState('');
+    const [item_link, setWishItemLink] = useState('');
+    
+    const handleCreateWishItem = (event, item_name, item_desc, item_price, item_link) => {
         event.preventDefault()
-        axios.post('http://localhost:9000/createWishItem', { item_name, item_desc, prod_owner_id })
+        axios.post('http://localhost:9000/createWishItem', { item_name, item_desc, item_price, item_link })
+            .then(window.location.reload())
             .catch((err) => alert('Error in Creating WishItem'))
     }
 
@@ -17,7 +19,7 @@ const CreateWishItem = () => {
               <h2 className="card-title text-center">Create Wishlist Item</h2>
       <form>
         <label>
-          Wish Item Name:
+          Item Name:
           <input
             type="text"
             value={item_name}
@@ -26,7 +28,7 @@ const CreateWishItem = () => {
         </label>
         <br />
         <label>
-          Wish Item Description:
+          Item Description:
           <textarea
             type="text"
             value={item_desc}
@@ -35,21 +37,24 @@ const CreateWishItem = () => {
         </label>
         <br />
         <label>
-          Wish Item Price:
-          <select onChange={(e) => setProductOwner(e.target.value)} value={prod_owner_id}>
-            <option value="">Select Price</option>
-            {/* {users.map((user, index) => {
-             return <option key={index} value={user._id}>   
-                {user.firstName} {user.lastName}
-            </option>
-            })
-            } */}
-            </select>
+          Item Price:
+          <input
+            type="text"
+            value={item_price}
+            onChange={(e) => setWishItemPrice(e.target.value)}
+          />
         </label>
         <br />
-     
+        <label>
+          Item Link:
+          <input
+            type="text"
+            value={item_link}
+            onChange={(e) => setWishItemLink(e.target.value)}
+          />
+        </label>
         <br />
-        <button type="button" onClick={(event) => handleCreateWishItem(event, item_name, item_desc, prod_owner_id)}>
+        <button type="button" onClick={(event) => handleCreateWishItem(event, item_name, item_desc, item_price, item_link)}>
           Create Wishlist Item
         </button>
       </form>

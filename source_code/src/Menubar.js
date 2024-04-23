@@ -19,16 +19,19 @@ function Menubar( ) {
                     {loggedInUser ? (
                         <>
                             <div>
-                                <Link to="/dashboard">Dashboard</Link>
+                                <Link to="/profile">Profile</Link>
                             </div>
                             <div>
-                                <Link to="/ViewEvent">View Event</Link>
+                                <Link to="/home">Create Event</Link>
                             </div>
                             <div>
-                                <Link to="/createWishlist">Create Wishlist</Link>
+                                <Link to="/viewevent">View Event</Link>
                             </div>
                             <div>
-                                <Link to="/viewReceiver">View Receiver</Link>
+                                <Link to="/wishlist"> Wishlist</Link>
+                            </div>
+                            <div>
+                                <Link to="/pairgenerator">Pair Generator</Link>
                             </div>
                         </>
                     ) : (

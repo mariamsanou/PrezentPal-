@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'; // If you use it elsewhere in your component
+import { useNavigate } from 'react-router-dom'; 
+import CreateEvent from './CreateEvent';
+import Menubar from './Menubar'; // Import the MenuBar component
 
 //Created a welcome page that allows signing out, 
 function Welcomepage() {
@@ -8,6 +10,8 @@ function Welcomepage() {
     const navigate = useNavigate();
     const loggedInUser = localStorage.getItem('loggedInUser');
 
+
+    
   const handleSignOut = (event) => {
     event.preventDefault();
     localStorage.clear();
@@ -19,59 +23,69 @@ function Welcomepage() {
     margin: '10px',
   };
 
+
   return (
-    <div style={{ backgroundColor: 'lightblue', padding: '20px', fontFamily: 'Arial' }}>
-        <h1>Welcome There</h1>
-        {loggedInUser && (
+    <div style={{ backgroundColor: 'lightblue', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', fontFamily: 'Arial' }}>
+     <div style={{ position: 'absolute', top: '50px', left: '20px' }}> 
+
+    <Menubar />
+    </div>
+
+    <h1 style={{ textAlign: 'center', marginTop: '100px' }}>Welcome There</h1>
+    {loggedInUser ? (
+        <div style={{ textAlign: 'center' }}>
             <p>Hello, {loggedInUser}</p>
-        )}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-            <Link to="/dashboard">
-                <button style={buttonStyle}>Dashboard</button>
-            </Link>
-            {loggedInUser ? (
-                <>
-                    <Link to="/createEvent">
-                        <button style={buttonStyle}>Create Event</button>
-                    </Link>
-                    <Link to="/joinEvent">
-                        <button style={buttonStyle}>Join Event</button>
-                    </Link>
-                    <button type="button" onClick={handleSignOut}>Sign Out</button>
-                </>
-            ) : (
-                <Link to="/signup">
-                    <button style={buttonStyle}>Sign Up</button>
+            <div>
+                <Link to="/profile" >
+                < button style={buttonStyle}>Dashboard </button>
                 </Link>
-            )}
+
+                <Link to="/ViewEvent" >
+                < button style={buttonStyle}>View Event</button>
+                </Link>
+                <button onClick={handleSignOut} style={buttonStyle}>Sign Out</button>
+                <h2>Create Event</h2>
+                    
+                    <CreateEvent/>
+
+
+               
+            </div>
         </div>
-        <div style={{ position: 'fixed', left: '0', top: '50%', transform: 'translateY(-50%)' }}>
-            <ul style={{ listStyleType: 'none', padding: '0' }}>
-                <li>
-                    <Link to="/dashboard">Dashboard</Link>
-                </li>
-                <li>
-                    <Link to="/createEvent">Create Event</Link>
-                </li>
-                <li>
-                    <Link to="/joinEvent">Join Event</Link>
-                </li>
-                <li>
-                    <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                    <Link to="/viewEvent">View Event</Link>
-                </li>
-                <li>
-                    <Link to="/wishlist">Wishlist</Link>
-                </li>
-                <li>
-                    <Link to="/viewHolidays">View Holidays</Link>
-                </li>
-            </ul>
-        </div>
+            
+        ) : (
+            <div style={{ textAlign: 'center', marginTop: '10px' }}>
+                <p>Please Sign Up First</p>
+            <p>Already have an account? <Link to="/login">Log In</Link></p>
+            <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
+                   
+                </div>
+        )}
+        <p style={{ textAlign: 'center', marginTop: '20px', fontWeight: 'bold' }}>Here are the list of Holidays!</p>
+        <p style={{ textAlign: 'center', marginTop: '20px' }
+    }>New Year's Day
+    Christmas Day
+    Thanksgiving Day (in the United States)
+    Easter Sunday
+    Hanukkah (Jewish holiday)
+    Diwali (Hindu holiday)
+    Ramadan (Islamic holiday)
+    Father's Day
+    International Women's Day
+    International Workers' Day (May Day)
+    Holi (Hindu spring festival of colors)
+    Bastille Day (French National Day)
+    Eid al-Fitr (Islamic holiday marking the end of Ramadan)
+    Eid al-Adha
+    Chinese New Year (Lunar New Year)
+    Independence Day (in various countries)
+    Valentine's Day
+    Halloween
+    Saint Patrick's Day
+    Mother's Day </p>
+
     </div>
 );
 }
 
-export default WelcomePage;
+export default Welcomepage;

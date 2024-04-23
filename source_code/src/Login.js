@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
-import Navbar from "./Navbar";
+import Menubar from './Menubar';
 
 function Login() {
     const navigate = useNavigate();
@@ -33,7 +33,7 @@ function Login() {
 
     return (
         <>
-        <Navbar></Navbar>
+        <Menubar />
             <div className="login-container">
                 <form onSubmit={handleLogin} className="login-form">
                     <h1>Login to PrezentPal</h1>

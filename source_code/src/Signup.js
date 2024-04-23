@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from "./Navbar";
+import Menubar from './Menubar';
 import './Signup.css';
 
 function Signup() {
@@ -82,7 +82,7 @@ function Signup() {
 
     return (
         <>
-        <Navbar />
+        <Menubar />
         <div className="signup-container">
 
             <form onSubmit={handleSignUp} className="signup-form">

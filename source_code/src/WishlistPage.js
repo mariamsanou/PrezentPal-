@@ -1,13 +1,13 @@
 import {React, useState} from "react";
-//import Navbar from "./Navbar";
-import ViewWishlist from "./Wishlist/ViewWishlist";
-import CreateWishItem from "./Wishlist/CreateWishItem";
-import RemoveItem from "./Wishlist/RemoveWishItem";
+import Menubar from "./Menubar";
+import ViewWishlist from "./ViewWishlist";
+import CreateWishItem from "./CreateWishItem";
+import RemoveItem from "./RemoveWishItem";
 
 const WishlistPage = () => {
     return(
     <div>
-      {/* <Navbar />     */}
+      <Menubar />
       <ViewWishlist />
       <CreateWishItem />
       

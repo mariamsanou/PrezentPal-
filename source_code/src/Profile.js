@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 import defaultProfile from './defaultProfile.png'; 
+import Menubar from './Menubar'; // Import the MenuBar component
 
 function Profile() {
     const [profileData, setProfileData] = useState({
@@ -166,9 +167,9 @@ function Profile() {
         });
     };
 
-    const addItemToWishlist = () => {
-        setShowWishlistModal(true); 
-    };
+    // const addItemToWishlist = () => {
+    //     setShowWishlistModal(true); 
+    // };
 
     const handlesaveProfile = () => {
         axios.post('http://your-api-endpoint/user/profile/save', profileData)
@@ -182,12 +183,17 @@ function Profile() {
 
 
     const goToWishlist = () => {
-        navigate('/Wishlist/ViewWishlist');
+        navigate('/wishlist');
     };
 
 
     return (
+        
         <div>
+            <div style={{ position: 'absolute', top: '50px', left: '20px' }}> 
+
+                <Menubar />
+                </div>
         <div className="action-bar">
             <button onClick={handlesaveProfile}>Save</button>
         </div>
@@ -253,7 +259,7 @@ function Profile() {
                 <div className="profile-wishlist">
                     <h3>My Wishlist ♥︎ </h3>
                     {profileData.wishlist.map((item, index) => <div key={index}>{item.name}: {item.description}</div>)}
-                    <button type="button" onClick={addItemToWishlist}>Add Item</button>
+                    {/* <button type="button" onClick={addItemToWishlist}>Add Item</button> */}
                     <button type="button" onClick={goToWishlist}>View Wishlist</button>
                 </div>
             </div>

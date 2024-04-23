@@ -2,8 +2,8 @@
 const mongoose = require("mongoose");
 
 const UserPairSchema = new mongoose.Schema({
-    firstName: String,
-    lastName: String,
+    firstname: String,
+    lastname: String,
     pairFirstName: String,
     pairLastName: String
 

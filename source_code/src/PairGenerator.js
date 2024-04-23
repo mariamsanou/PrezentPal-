@@ -1,5 +1,6 @@
 import {React, useState, useEffect} from 'react';
 import axios from 'axios';
+import Menubar from './Menubar'; // Import the MenuBar component
 
 export default function PairGenerator(){
     const [users, setUsers] = useState([])
@@ -32,11 +33,15 @@ export default function PairGenerator(){
 
     return (
         <div>
+          <div style={{ position: 'absolute', top: '50px', left: '20px' }}> 
+
+<Menubar />
+</div>
         <h1>User Pairing Generator</h1>
         <button onClick={pairUsers}>Pair Users</button>
         {pairs.map((pair, index) => (
           <div key={index}>
-            <p>{pair[0].firstName} {pair[0].lastName}  is paired with {pair[1].firstName} {pair[1].lastName}</p>
+            <p>{pair[0].firstname} {pair[0].lastname}  is paired with {pair[1].firstname} {pair[1].lastname}</p>
           </div>
         ))}
 
@@ -47,3 +52,4 @@ export default function PairGenerator(){
 
 
 }
+

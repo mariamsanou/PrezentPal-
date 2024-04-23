@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Wishlist.css'; // Ensure you have a corresponding CSS file for styling
+import { Link } from 'react-router-dom';
 
 function Wishlist() {
     const [items, setItems] = useState([]);

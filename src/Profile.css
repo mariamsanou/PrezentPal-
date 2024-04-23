@@ -1,0 +1,134 @@
+/* Base styling for the entire profile container */
+.profile-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+}
+
+/* Top bar for actions like Save */
+.action-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #f1f1f1;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 1001; /* Ensure it's above other content */
+}
+
+/* Styling for each section of the profile, beneath the action bar */
+.left-section, .right-section {
+    flex: 1;
+    padding: 40px 20px 20px 20px; /* Additional top padding to account for the action bar */
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px); /* Subtract height of action bar */
+}
+
+/* Separation line between sections */
+.left-section {
+    border-right: 2px solid #ddd;
+}
+
+/* Styles for the profile picture container */
+.profile-picture-box {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture-box img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+}
+
+/* Form input and textarea styling for consistent appearance */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 150px; /* Sufficient height for the bio section */
+}
+
+/* General button styling */
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Modal styling for interests */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    max-width: 90%;
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.modal h2 {
+    color: #333;
+}
+
+.modal ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.modal ul li {
+    padding: 8px;
+    margin-top: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal button {
+    width: auto;
+    padding: 8px 16px;
+    margin-top: 20px;
+    background-color: #dc3545;
+}
+
+.modal button:hover {
+    background-color: #c82333;
+}
+.close-button {
+    background: transparent;
+    border: none;
+    color: #000; /* Change color as needed */
+    font-size: 20px;
+    cursor: pointer;
+}

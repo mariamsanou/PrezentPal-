@@ -1,0 +1,22 @@
+/* index.css */
+
+@import url('./Login.css');
+@import url('./Signup.css');
+@import url('./Profile.css');
+@import url('./Wishlist.css');
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #b1cdec;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #333;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+

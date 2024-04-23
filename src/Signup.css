@@ -1,0 +1,120 @@
+/* signup.css */
+html, body {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.signup-container {
+    max-width: 350px;
+    align-items: center; 
+    margin: 0 auto; /* Horizontal centering (auto margins) */
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    width: auto; 
+}
+
+.signup-form h1 {
+    text-align: center;
+    color: #333;
+}
+
+.signup-form input[type="text"],
+.signup-form input[type="email"],
+.signup-form input[type="password"],
+.signup-form input[type="phone"],
+.signup-form select {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.signup-form input[type="phone"] {
+    box-sizing: border-box; 
+}
+
+.signup-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #3d4c64;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.signup-form button:disabled {
+    background-color: #cccccc;
+}
+
+.signup-form .gender-btn {
+    padding: 5px 20px;
+    margin-right: 10px;
+    background-color: #898d98;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.signup-form .gender-btn.active {
+    background-color: #84a4c1;
+    color: white;
+    
+}
+
+.signup-form .error-message {
+    color: #c94f4b;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.signup-form .login-link {
+    text-align: center;
+    margin-top: 15px;
+    
+}
+.signup-form .login-link a {
+    text-decoration: none;  
+    color: #7c9cba;         
+}
+
+.signup-form .dob label,
+.signup-form .gender label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #666;
+    
+}
+
+.signup-form .date-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+}
+
+
+
+.signup-form .date-inputs select,
+.signup-form .date-inputs input {
+    width: 30%;  
+    margin: 0 2px; 
+    padding: 8px;  
+}
+
+.signup-form .date-inputs select,
+.signup-form .date-inputs input[type="number"] {
+    font-size: 0.8em;  
+}
+
+.signup-form .date-inputs input:last-child {
+    margin-right: 0;
+}
+

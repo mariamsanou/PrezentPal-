@@ -2,13 +2,13 @@ import {React, useState, useEffect} from "react";
 import axios from 'axios';
 
 const CreateWishItem = () => {
-    const [proj_name, setWishItemName] = useState('');
-    const [proj_desc, setWishItemDescription] = useState('');
+    const [item_name, setWishItemName] = useState('');
+    const [item_desc, setWishItemDescription] = useState('');
     const [prod_owner_id, setProductOwner] = useState('');
 
-    const handleCreateWishItem = (event, proj_name, proj_desc, prod_owner_id,) => {
+    const handleCreateWishItem = (event, item_name, item_desc, prod_owner_id,) => {
         event.preventDefault()
-        axios.post('http://localhost:9000/createWishItem', { proj_name, proj_desc, prod_owner_id })
+        axios.post('http://localhost:9000/createWishItem', { item_name, item_desc, prod_owner_id })
             .catch((err) => alert('Error in Creating WishItem'))
     }
 
@@ -20,7 +20,7 @@ const CreateWishItem = () => {
           Wish Item Name:
           <input
             type="text"
-            value={proj_name}
+            value={item_name}
             onChange={(e) => setWishItemName(e.target.value)}
           />
         </label>
@@ -29,7 +29,7 @@ const CreateWishItem = () => {
           Wish Item Description:
           <textarea
             type="text"
-            value={proj_desc}
+            value={item_desc}
             onChange={(e) => setWishItemDescription(e.target.value)}
           />
         </label>
@@ -49,7 +49,7 @@ const CreateWishItem = () => {
         <br />
      
         <br />
-        <button type="button" onClick={(event) => handleCreateWishItem(event, proj_name, proj_desc, prod_owner_id)}>
+        <button type="button" onClick={(event) => handleCreateWishItem(event, item_name, item_desc, prod_owner_id)}>
           Create Wishlist Item
         </button>
       </form>

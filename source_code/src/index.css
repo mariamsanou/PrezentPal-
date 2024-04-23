@@ -4,15 +4,18 @@
 @import url('./Signup.css');
 @import url('./Profile.css');
 @import url('./Wishlist.css');
+@import url('./Navbar.css');
 
 body {
-    font-family: Arial, sans-serif;
+    
     background-color: #b1cdec;
     margin: 0;
     padding: 0;
+    
 }
 
 header {
+    font-family: Arial, sans-serif;
     background: #333;
     color: white;
     padding: 10px 20px;

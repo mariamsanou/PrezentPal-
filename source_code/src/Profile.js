@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Profile.css';
+import defaultProfile from './defaultProfile.png'; 
 
 function Profile() {
     const [profileData, setProfileData] = useState({
@@ -12,7 +14,7 @@ function Profile() {
         gender: '',
         dateOfBirth: '',
         about: '',
-        profilePicture: '',
+        profilePicture: defaultProfile,
         interests: [],
         wishlist: []
     });
@@ -22,6 +24,7 @@ function Profile() {
     function getCurrentUserId() {
         return localStorage.getItem('loggedInUser');
     }
+    
 
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [newInterest, setNewInterest] = useState('');
@@ -33,36 +36,38 @@ function Profile() {
 
     
     useEffect(() => {
-        const userId = getCurrentUserId();
-
-        const value = { userId };
-
-        const response2 = axios.get('http://localhost:9000/getUser', value);
-        console.log('User successful:', response2.data);
-
-
-        axios.get(`http://localhost:9000/getUserProfile', value`)
-            .then(response => {
-                const data = response.data;
+        const fetchData = async () => {
+            const userId = getCurrentUserId();
+            const value = { params: { userId } };
+    
+            try {
+                const userResponse = await axios.get('http://localhost:9000/getUser', value);
+                const userData = userResponse.data;
+    
+                const profileResponse = await axios.get('http://localhost:9000/getUserProfile', value);
+                const profileData = profileResponse.data;
+    
                 setProfileData({
-                    firstname: response2.firstname,
-                    lastname: response2.lastname,
-                    email: response2.email,
-                    password: response2.password,
-                    phone: response2.phone,
-                    gender: response2.gender,
-                    dateOfBirth: response2.dateOfBirth,
-                    about: data.bio,
-                    profilePicture: data.profilePicture,
-                    interests: data.interestID || [], // Fallback to empty array if undefined
-                    wishlist: data.wishlistID || []   // Fallback to empty array if undefined
-                    
+                    firstname: userData.firstname,
+                    lastname: userData.lastname,
+                    email: userData.email,
+                    password: userData.password,
+                    phone: userData.phone,
+                    gender: userData.gender,
+                    dateOfBirth: new Date(userData.dateOfBirth).toISOString().split('T')[0],
+                    about: profileData.bio,
+                    profilePicture: profileData.profilePicture || defaultProfile,
+                    interests: profileData.interestID || [],
+                    wishlist: profileData.wishlistID || []
                 });
-            })
-            .catch(error => {
-                console.error('Error fetching profile data:', error);
-            });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchData();
     }, []);
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,33 +77,51 @@ function Profile() {
         }));
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        const formData = new FormData();
-        formData.append('profilePicture', file);
-
-        axios.post('http://your-api-endpoint/user/profile/upload', formData)
-            .then(response => {
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            
+            const reader = new FileReader();
+            reader.onloadend = () => {
                 setProfileData(prevState => ({
                     ...prevState,
-                    profilePicture: response.data.filePath // Assuming API returns the path of the saved image
+                    profilePicture: reader.result
                 }));
+            };
+            reader.readAsDataURL(file);
+    
+           
+            const formData = new FormData();
+            formData.append('profilePicture', file);
+    
+            axios.post('http://your-api-endpoint/user/profile/upload', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(response => {
+                console.log('Image uploaded successfully:', response.data.filePath);
+                
             })
             .catch(error => {
                 console.error('Error uploading image:', error);
             });
+        } else {
+            alert('Please select an image file.');
+        }
     };
 
     const handleAddInterest = () => {
         if (newInterest.trim()) {
-            axios.post('http://your-api-endpoint/user/interests/add', { interest: newInterest })
+            const userId = getCurrentUserId();
+            axios.post('http://localhost:9000/createUserInterest', { userID: userId, interestName: newInterest })
                 .then(response => {
                     setProfileData(prevState => ({
                         ...prevState,
                         interests: [...prevState.interests, newInterest]
                     }));
-                    setNewInterest(''); // Reset the input
-                    setShowInterestsModal(false); // Close modal
+                    setNewInterest(''); 
+                    setShowInterestsModal(false); 
                 })
                 .catch(error => {
                     console.error('Error saving new interest:', error);
@@ -124,7 +147,7 @@ function Profile() {
             return;
         }
         
-        axios.post('http://your-api-endpoint/user/wishlist/add', {
+        axios.post('http://localhost:9000/addWishlistItem', {
             name: wishlistItemName,
             interestTag: selectedInterest,
             description: wishlistItemDescription
@@ -159,39 +182,65 @@ function Profile() {
 
 
     const goToWishlist = () => {
-        navigate('/Wishlist');
+        navigate('/Wishlist/ViewWishlist');
     };
 
+
     return (
+        <div>
+        <div className="action-bar">
+            <button onClick={handlesaveProfile}>Save</button>
+        </div>
         <div className="profile-container">
+            
+ 
+
             <div className="left-section">
                 
-                    <button onClick={handlesaveProfile}>Save</button>
+                    
 
                     <div className="profile-picture-box">
-                    {/* Updated img tag with onError handling */}
                     <img 
-                        src={profileData.profilePicture || 'defaultProfile.png'} 
-                        alt="Profile"
-                        onError={(e) => { e.target.onerror = null; e.target.src = 'fallback-image.png'; }}
-                    />
-                    <input type="file" onChange={handleImageChange} />
-                </div>
+                    src={profileData.profilePicture || defaultProfile} 
+                    alt="Profile"
+                    onError={(e) => { e.target.src = defaultProfile; }} 
+                />
+    <label htmlFor="fileInput" className="edit-profile-picture">
+                    Edit Profile Picture
+                </label>
+                <input 
+                    id="fileInput" 
+                    type="file" 
+                    onChange={handleImageChange} 
+                    accept="image/*" 
+                    style={{ display: 'none' }} 
+/>
+
+
+</div>
                   
                 <form>
-                    <input type="text" name="name" value={profileData.firstname} onChange={handleChange} placeholder="Name" />
+                    <label htmlFor="firstname">Firstname</label>
+                    <input type="text" name="firstname" value={profileData.firstname} onChange={handleChange} placeholder="firstName" />
+                    <label htmlFor="lastname">Lastname</label>
+                    <input type="text" name="lastname" value={profileData.lastname} onChange={handleChange} placeholder="lastName" />
+                    <label htmlFor="email">Email</label>
                     <input type="email" name="email" value={profileData.email} onChange={handleChange} placeholder="Email" />
+                    <label htmlFor="password">Password</label>
                     <input type="password" name="password" value={profileData.password} onChange={handleChange} placeholder="Password" />
+                    <label htmlFor="phone">Phone</label>
                     <input type="text" name="phone" value={profileData.phone} onChange={handleChange} placeholder="Phone" />
-                    <select name="gender" value={profileData.gender} onChange={handleChange}>
-                        <option value="gender">gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
+                    <label htmlFor="gender">Gender</label>
+                    <select name="gender" value={profileData.gender} onChange={handleChange}>   
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
                     </select>
+                    <label htmlFor="dateofbirth">Date of Birth</label>
                     <input type="date" name="dateOfBirth" value={profileData.dateOfBirth} onChange={handleChange} />
                 </form>
             </div>
             <div className="right-section">
+                <label htmlFor="About">About me</label>
                 <textarea name="about" value={profileData.about} onChange={handleChange} placeholder="About me"></textarea>
                 
                 <div className="profile-interests">
@@ -202,7 +251,7 @@ function Profile() {
                 </div>
                 
                 <div className="profile-wishlist">
-                    <h3>My Wishlist</h3>
+                    <h3>My Wishlist ♥︎ </h3>
                     {profileData.wishlist.map((item, index) => <div key={index}>{item.name}: {item.description}</div>)}
                     <button type="button" onClick={addItemToWishlist}>Add Item</button>
                     <button type="button" onClick={goToWishlist}>View Wishlist</button>
@@ -294,6 +343,7 @@ function Profile() {
                 </div>
             </div>
         )}
+        </div>
         </div>
     );
     

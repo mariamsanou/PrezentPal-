@@ -1,0 +1,9 @@
+.navbar {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f8f9fa; /* Light background for the navbar */
+    border-bottom: 1px solid #dee2e6; /* A subtle border line */
+    z-index: 1000; /* Makes sure the navbar is above other content */
+}

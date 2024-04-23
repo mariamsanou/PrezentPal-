@@ -1,7 +1,7 @@
 import {React, useState, useEffect} from "react";
 import axios from 'axios';
 import './Wishlist.css';
-import Menubar from "../Menubar";
+//import Menubar from "../Menubar";
 import RemoveItem from "./RemoveWishItem";
 
 const ViewWishlist = () => {
@@ -18,7 +18,7 @@ const ViewWishlist = () => {
 
   return (
     <div className="container">
-        <Menubar />
+        {/* <Menubar /> */}
                 <h2 className="card-title text-center">Wishlist</h2>
                 <table>
                 <thead>

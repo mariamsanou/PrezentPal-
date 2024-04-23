@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import Navbar from "./Navbar";
 
 function Login() {
     const navigate = useNavigate();
@@ -18,10 +19,10 @@ function Login() {
         const loginValues = { email, password };
 
         try {
-          
-            const response = await axios.get('http://localhost:9000/getUser', loginValues);
-            localStorage.setItem('loggedInUser', response.data._id); // Consider security implications
+            const response = await axios.post('http://localhost:9000/getUserLogin', loginValues);
+            localStorage.setItem('loggedInUser', response.data._id); 
             navigate('/Profile');
+
         } catch (err) {
 
             setErrorMessage('Error in Login. Please check your credentials.');
@@ -32,6 +33,7 @@ function Login() {
 
     return (
         <>
+        <Navbar></Navbar>
             <div className="login-container">
                 <form onSubmit={handleLogin} className="login-form">
                     <h1>Login to PrezentPal</h1>

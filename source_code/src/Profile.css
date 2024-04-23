@@ -6,50 +6,62 @@
     min-height: 100vh;
     margin: 0;
     padding: 20px;
+    padding-top: 100px; 
     background-color: #f9f9f9;
     box-sizing: border-box;
 }
+label {
+  
+    font-weight: bold;
+    padding-bottom: 10px;
+}
 
-/* Top bar for actions like Save */
 .action-bar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: #f1f1f1;
+    background: #f9f9f9;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 1001; /* Ensure it's above other content */
 }
 
-/* Styling for each section of the profile, beneath the action bar */
+.edit-profile-picture {
+    cursor: pointer;
+    color: #3d4c64; 
+    text-decoration: none; 
+    display: block; 
+    margin-top: 8px; 
+}
+
+
 .left-section, .right-section {
     flex: 1;
-    padding: 40px 20px 20px 20px; /* Additional top padding to account for the action bar */
+    padding: 150px 20px 20px 20px; 
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 60px); /* Subtract height of action bar */
+    min-height: calc(100vh - 60px); 
 }
 
-/* Separation line between sections */
-.left-section {
-    border-right: 2px solid #ddd;
-}
 
-/* Styles for the profile picture container */
+
+
+
 .profile-picture-box {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-top: 20px;
 }
 
 .profile-picture-box img {
     width: 150px;
     height: 150px;
     border-radius: 50%;
-    border: 3px solid #ccc;
+    border: 3px solid #304f75;
 }
 
-/* Form input and textarea styling for consistent appearance */
+
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -66,19 +78,22 @@ select {
 }
 
 textarea {
-    height: 150px; /* Sufficient height for the bio section */
+    height: 150px; 
 }
 
-/* General button styling */
+
 button {
     padding: 10px 20px;
     margin-top: 10px;
     color: white;
-    background-color: #007bff;
+    background-color: #3d4c64;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
+
+
+
 
 button:hover {
     background-color: #0056b3;
@@ -91,9 +106,9 @@ button:hover {
     left: 50%;
     transform: translate(-50%, -50%);
     width: auto;
-    max-width: 90%;
+    max-width: 100%;
     padding: 20px;
-    background-color: white;
+    background-color: rgb(214, 228, 241);
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -119,16 +134,19 @@ button:hover {
     width: auto;
     padding: 8px 16px;
     margin-top: 20px;
-    background-color: #dc3545;
+    background-color: #4e78a8;
+   
 }
 
-.modal button:hover {
-    background-color: #c82333;
-}
 .close-button {
     background: transparent;
     border: none;
-    color: #000; /* Change color as needed */
+    color: #000; 
     font-size: 20px;
     cursor: pointer;
 }
+
+.modal button:hover {
+    background-color: #2362c8;
+}
+

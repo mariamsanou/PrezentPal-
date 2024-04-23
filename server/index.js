@@ -66,3 +66,132 @@ app.get('/getWishlist', async (req, res) => {
 })
 
 
+
+
+app.post('/createUser', async (req, res) => {
+    try {
+        const user = new User(req.body);
+        await user.save()
+        res.send(user)
+        console.log('User Created')
+
+    }
+    catch (error) {
+        console.error(error); 
+    res.status(500).send(error.message); 
+    }
+})
+
+app.post('/createUserProfile', async (req, res) => {
+    try {
+        const user = new UserProfile(req.body);
+        await user.save()
+        res.send(user)
+        console.log('UserProfile Created')
+
+    }
+    catch (error) {
+        console.error(error); 
+    res.status(500).send(error.message); 
+    }
+})
+
+app.post('/createUserInterest', async (req, res) => {
+    try {
+        const user = new UserInterest(req.body);
+        await user.save()
+        res.send(user)
+        console.log('UserInterest Created')
+
+    }
+    catch (error) {
+        console.error(error); 
+    res.status(500).send(error.message); 
+    }
+})
+
+app.post('/createUserWishlist', async (req, res) => {
+    try {
+        const user = new UserWishlist(req.body);
+        await user.save()
+        res.send(user)
+        console.log('UserWishlist Created')
+
+    }
+    catch (error) {
+        console.error(error); 
+    res.status(500).send(error.message); 
+    }
+})
+
+app.post('/createItem', async (req, res) => {
+    try {
+        const user = new Item(req.body);
+        await user.save()
+        res.send(user)
+        console.log('Item Created')
+
+    }
+    catch (error) {
+        console.error(error); 
+    res.status(500).send(error.message); 
+    }
+})
+
+
+
+
+app.get('/getUser', async (req, res) => {
+    try {
+        const userId = req.query.userId; // Get userId from query parameters
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        res.send(user);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});
+
+app.post('/getUserLogin', async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.findOne({ email: email, password: password });
+        if (!user) {
+            return res.status(404).json({ message: 'Invalid email or password' });
+        }
+        res.json({ _id: user._id });
+        console.log('User Sent');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
+
+app.get('/getUserProfile', async (req, res) => {
+    try {
+        const userId = req.query.userId; // Get userId from query parameters
+        const userProfile = await UserProfile.findOne({ userID: userId });
+        if (!userProfile) {
+            return res.status(404).send('User profile not found');
+        }
+        res.send(userProfile);
+    } catch (error) {
+        res.status(500).send('Server error');
+    }
+});
+
+app.get('/getUserInterests', async (req, res) => {
+    const firstname = req.query.firstname
+    const lastname = req.query.lastname
+    try {
+        const user = await UserProfile.find({ firstname, lastname })
+        res.send(user)
+        console.log('UserProfile Sent')
+    }
+    catch (error) {
+        res.status(500).send(error)
+    }
+})

@@ -31,17 +31,6 @@ app.get('/getUsers', async (req, res) => {
     }
 })
 
-app.post('/createPartners', async (req, res) => {
-    try {
-        
-    }
-    catch (error){
-        res.status(500).send(error)
-    }
-})
-
-
-
 //Wishlist endpoints
 app.post('/createWishItem', async (req, res) => {
     try {
@@ -195,3 +184,31 @@ app.get('/getUserInterests', async (req, res) => {
         res.status(500).send(error)
     }
 })
+
+app.post('/createPairs', async (req, res) => {
+    try {
+            const userpairs = req.body;
+            for(let i = 0; i < userpairs.pairs.length; i++){
+                const pair1 = userpairs.pairs[i][0]
+                const pair2 = userpairs.pairs[i][1]
+
+                const truePair = new UserPair({
+                    firstName: pair1.firstName,
+                    lastName: pair1.lastName,
+                    pairFirstName: pair2.firstName,
+                    pairLastName: pair2.lastName
+                  });
+                  
+                  await truePair.save()
+                
+            }
+
+            console.log(`Pair created! ${userpairs}`)
+            res.send(userpairs)
+    }
+    catch (error){
+        console.log(error)
+        res.status(500).send(error)
+    }
+})
+

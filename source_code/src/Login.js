@@ -6,6 +6,7 @@ import Menubar from './Menubar';
 
 function Login() {
     const navigate = useNavigate();
+    //const [loggedInUser, setLoggedInUser] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -20,8 +21,9 @@ function Login() {
 
         try {
             const response = await axios.post('http://localhost:9000/getUserLogin', loginValues);
+            //setLoggedInUser(response.data._id);
             localStorage.setItem('loggedInUser', response.data._id); 
-            navigate('/Profile');
+            navigate('/viewevent');
 
         } catch (err) {
 

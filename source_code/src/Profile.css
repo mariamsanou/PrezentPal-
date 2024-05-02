@@ -1,4 +1,4 @@
-/* Base styling for the entire profile container */
+
 .profile-container {
     display: flex;
     flex-direction: row;
@@ -16,6 +16,10 @@ label {
     padding-bottom: 10px;
 }
 
+.button-spacing-right {
+    margin-right: 40px; 
+}
+
 .action-bar {
     position: fixed;
     top: 0;
@@ -24,7 +28,7 @@ label {
     background: #f9f9f9;
     padding: 10px 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    z-index: 1001; /* Ensure it's above other content */
+    z-index: 1001; 
 }
 
 .edit-profile-picture {
@@ -33,6 +37,7 @@ label {
     text-decoration: none; 
     display: block; 
     margin-top: 8px; 
+    pointer-events: auto;
 }
 
 
@@ -43,9 +48,6 @@ label {
     flex-direction: column;
     min-height: calc(100vh - 60px); 
 }
-
-
-
 
 
 .profile-picture-box {
@@ -65,7 +67,6 @@ label {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-input[type="file"],
 input[type="date"],
 textarea,
 select {
@@ -85,15 +86,13 @@ textarea {
 button {
     padding: 10px 20px;
     margin-top: 10px;
+
     color: white;
     background-color: #3d4c64;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
-
-
-
 
 button:hover {
     background-color: #0056b3;
@@ -138,12 +137,19 @@ button:hover {
    
 }
 
-.close-button {
+.modal .close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10;  
+    margin: 0;  
     background: transparent;
-    border: none;
-    color: #000; 
-    font-size: 20px;
-    cursor: pointer;
+    font-size: 1.5em;
+    color: #000;
+ 
+}
+.modal .close-button:hover {
+    background-color: transparent;
 }
 
 .modal button:hover {

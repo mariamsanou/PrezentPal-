@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 import defaultProfile from './defaultProfile.png'; 
-import Menubar from './Menubar'; // Import the MenuBar component
+import Menubar from './Menubar'; 
 
 function Profile() {
     const [profileData, setProfileData] = useState({
@@ -15,27 +15,24 @@ function Profile() {
         gender: '',
         dateOfBirth: '',
         about: '',
-        profilePicture: defaultProfile,
+        profilePicture: '',
         interests: [],
         wishlist: []
     });
-
-    const navigate = useNavigate();
-
+    
     function getCurrentUserId() {
         return localStorage.getItem('loggedInUser');
     }
-    
 
+    const navigate = useNavigate();
+    const [unsavedInterests, setUnsavedInterests] = useState([]);
+    const [tempProfileData, setTempProfileData] = useState({ ...profileData });
+    const [allInterests, setAllInterests] = useState([]);
     const [showInterestsModal, setShowInterestsModal] = useState(false);
     const [newInterest, setNewInterest] = useState('');
     const [showAllInterests, setShowAllInterests] = useState('');
-    const [showWishlistModal, setShowWishlistModal] = useState(false);
-    const [wishlistItemName, setWishlistItemName] = useState('');
-    const [selectedInterest, setSelectedInterest] = useState('');
-    const [wishlistItemDescription, setWishlistItemDescription] = useState('');
-
     
+
     useEffect(() => {
         const fetchData = async () => {
             const userId = getCurrentUserId();
@@ -48,7 +45,7 @@ function Profile() {
                 const profileResponse = await axios.get('http://localhost:9000/getUserProfile', value);
                 const profileData = profileResponse.data;
     
-                setProfileData({
+                const fetchedData = {
                     firstname: userData.firstname,
                     lastname: userData.lastname,
                     email: userData.email,
@@ -60,7 +57,10 @@ function Profile() {
                     profilePicture: profileData.profilePicture || defaultProfile,
                     interests: profileData.interestID || [],
                     wishlist: profileData.wishlistID || []
-                });
+                };
+    
+                setProfileData(fetchedData);
+                setTempProfileData(fetchedData); 
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -69,117 +69,72 @@ function Profile() {
         fetchData();
     }, []);
     
+    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setProfileData(prevState => ({
+        setTempProfileData(prevState => ({
             ...prevState,
             [name]: value
         }));
     };
+    
 
-    const handleImageChange = (event) => {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith('image/')) {
-            
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setProfileData(prevState => ({
-                    ...prevState,
-                    profilePicture: reader.result
-                }));
-            };
-            reader.readAsDataURL(file);
     
-           
-            const formData = new FormData();
-            formData.append('profilePicture', file);
-    
-            axios.post('http://your-api-endpoint/user/profile/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(response => {
-                console.log('Image uploaded successfully:', response.data.filePath);
-                
-            })
-            .catch(error => {
-                console.error('Error uploading image:', error);
-            });
-        } else {
-            alert('Please select an image file.');
-        }
-    };
 
     const handleAddInterest = () => {
-        if (newInterest.trim()) {
-            const userId = getCurrentUserId();
-            axios.post('http://localhost:9000/createUserInterest', { userID: userId, interestName: newInterest })
-                .then(response => {
-                    setProfileData(prevState => ({
-                        ...prevState,
-                        interests: [...prevState.interests, newInterest]
-                    }));
-                    setNewInterest(''); 
-                    setShowInterestsModal(false); 
-                })
-                .catch(error => {
-                    console.error('Error saving new interest:', error);
-                });
-        } else {
-            alert('Interest name cannot be empty.');
-        }
-    };
+    if (newInterest.trim()) {
+        setUnsavedInterests(prevInterests => [...prevInterests, newInterest]);
+        setNewInterest('');
+        setShowInterestsModal(false);
+    } else {
+        alert('Interest name cannot be empty.');
+    }
+};
 
     const addInterest = () => {
         setShowInterestsModal(!showInterestsModal);
     };
+    
 
-    const viewInterests = () =>{
+    const viewInterests = () => {
+        const userId = getCurrentUserId();
         setShowAllInterests(!showAllInterests);
-    }
-
-
-    const handleAddWishlistItem = () => {
-       
-        if (!wishlistItemName.trim() || !wishlistItemDescription.trim()) {
-            alert('Please fill in all fields.');
-            return;
+        if (!showAllInterests) { 
+            axios.get(`http://localhost:9000/getUserInterests/${userId}`)
+                .then(response => {
+                    setAllInterests(response.data); 
+                })
+                .catch(error => {
+                    console.error('Failed to fetch interests:', error);
+                });
         }
-        
-        axios.post('http://localhost:9000/addWishlistItem', {
-            name: wishlistItemName,
-            interestTag: selectedInterest,
-            description: wishlistItemDescription
-        }).then(response => {
-            setProfileData(prevState => ({
-                ...prevState,
-                wishlist: [...prevState.wishlist, response.data]
-            }));
+    };
+
+
+    
+
+
+    const handleSaveProfile = async () => {
+        const userId = getCurrentUserId();
+        try {
             
-            setWishlistItemName('');
-            setSelectedInterest('');
-            setWishlistItemDescription('');
-            setShowWishlistModal(false);
-        }).catch(error => {
-            console.error('Error adding to wishlist:', error);
-        });
+            const updatedProfileData = {
+                ...tempProfileData,
+                interests: [...profileData.interests, ...unsavedInterests]
+            };
+    
+            await axios.post(`http://localhost:9000/updateUserProfile/${userId}`, updatedProfileData);
+            
+            setProfileData(updatedProfileData); // Update the profile data with the changes
+            setUnsavedInterests([]); // Clear the unsaved interests
+            setShowInterestsModal(false); // Hide the interests modal
+            alert('Profile saved successfully.');
+        } catch (error) {
+            console.error('Error saving profile data:', error);
+        }
     };
-
-    // const addItemToWishlist = () => {
-    //     setShowWishlistModal(true); 
-    // };
-
-    const handlesaveProfile = () => {
-        axios.post('http://your-api-endpoint/user/profile/save', profileData)
-            .then(() => {
-                alert('Profile saved successfully.');
-            })
-            .catch(error => {
-                console.error('Error saving profile data:', error);
-            });
-    };
+    
 
 
     const goToWishlist = () => {
@@ -195,71 +150,71 @@ function Profile() {
                 <Menubar />
                 </div>
         <div className="action-bar">
-            <button onClick={handlesaveProfile}>Save</button>
+        <button onClick={handleSaveProfile}>Save</button>
+
         </div>
+
         <div className="profile-container">
             
- 
 
             <div className="left-section">
                 
-                    
-
                     <div className="profile-picture-box">
                     <img 
                     src={profileData.profilePicture || defaultProfile} 
                     alt="Profile"
                     onError={(e) => { e.target.src = defaultProfile; }} 
                 />
-    <label htmlFor="fileInput" className="edit-profile-picture">
-                    Edit Profile Picture
-                </label>
-                <input 
-                    id="fileInput" 
-                    type="file" 
-                    onChange={handleImageChange} 
-                    accept="image/*" 
-                    style={{ display: 'none' }} 
+                <label htmlFor="fileInput" className="edit-profile-picture">
+    Edit Profile Picture
+</label>
+
+
+<input 
+type="file" 
+    id="fileInput" 
+    accept="image/*" 
+    style={{ display: 'none' }} 
 />
+    
 
 
 </div>
                   
-                <form>
-                    <label htmlFor="firstname">Firstname</label>
-                    <input type="text" name="firstname" value={profileData.firstname} onChange={handleChange} placeholder="firstName" />
-                    <label htmlFor="lastname">Lastname</label>
-                    <input type="text" name="lastname" value={profileData.lastname} onChange={handleChange} placeholder="lastName" />
-                    <label htmlFor="email">Email</label>
-                    <input type="email" name="email" value={profileData.email} onChange={handleChange} placeholder="Email" />
-                    <label htmlFor="password">Password</label>
-                    <input type="password" name="password" value={profileData.password} onChange={handleChange} placeholder="Password" />
-                    <label htmlFor="phone">Phone</label>
-                    <input type="text" name="phone" value={profileData.phone} onChange={handleChange} placeholder="Phone" />
-                    <label htmlFor="gender">Gender</label>
-                    <select name="gender" value={profileData.gender} onChange={handleChange}>   
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                    <label htmlFor="dateofbirth">Date of Birth</label>
-                    <input type="date" name="dateOfBirth" value={profileData.dateOfBirth} onChange={handleChange} />
-                </form>
+<form>
+<label htmlFor="firstname">Firstname</label>
+    <input type="text" name="firstname" value={tempProfileData.firstname} readOnly />
+    <label htmlFor="lastname">Lastname</label>
+    <input type="text" name="lastname" value={tempProfileData.lastname} readOnly />
+    <label htmlFor="email">Email</label>
+    <input type="email" name="email" value={tempProfileData.email} readOnly />
+    <label htmlFor="password">Password</label>
+    <input type="password" name="password" value={tempProfileData.password} onChange={handleChange} placeholder="Password" />
+    <label htmlFor="phone">Phone</label>
+    <input type="text" name="phone" value={tempProfileData.phone} onChange={handleChange} placeholder="Phone" />
+    <label htmlFor="gender">Gender</label>
+    <select name="gender" value={tempProfileData.gender} onChange={handleChange}>   
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select>
+    <label htmlFor="dateOfBirth">Date of Birth</label>
+    <input type="date" name="dateOfBirth" value={tempProfileData.dateOfBirth} onChange={handleChange} />
+</form>
             </div>
             <div className="right-section">
                 <label htmlFor="About">About me</label>
-                <textarea name="about" value={profileData.about} onChange={handleChange} placeholder="About me"></textarea>
+                <textarea name="about" value={tempProfileData.about} onChange={handleChange} placeholder="About me"></textarea>
                 
                 <div className="profile-interests">
-                    <h3>My Interests</h3>
-                    {profileData.interests.map((interest, index) => <div key={index}>{interest}</div>)}
-                    <button type="button" onClick={() => setShowInterestsModal(true)}>Add Interest</button>
-                    <button type="button" onClick={viewInterests}>View All Interests</button>
-                </div>
+    <h3>My Interests</h3>
+    <div>
+        <button type="button" className="button-spacing-right" onClick={() => setShowInterestsModal(true)}>Add Interest</button>
+        <button type="button" onClick={viewInterests}>View All Interests</button>
+    </div>
+</div>
                 
                 <div className="profile-wishlist">
                     <h3>My Wishlist ♥︎ </h3>
-                    {profileData.wishlist.map((item, index) => <div key={index}>{item.name}: {item.description}</div>)}
-                    {/* <button type="button" onClick={addItemToWishlist}>Add Item</button> */}
                     <button type="button" onClick={goToWishlist}>View Wishlist</button>
                 </div>
             </div>
@@ -289,66 +244,26 @@ function Profile() {
             )}
 
 
-            {showAllInterests && (
-                <div className="modal">
-                    <div className="modal-content">
-                    <div className="modal-header">
-                            <span className="modal-title">View All Interests</span>
-                            <button onClick={viewInterests} className="close-button">&times;</button>
-                        </div>
-                        <div className="modal-body">
-                            
-                        </div>
-                        
-                    </div>
-                </div>
-            )}
-
-
-            
-            {showWishlistModal && (
-            <div className="modal">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <span className="modal-title">Add Wishlist Item</span>
-                        <button onClick={() => setShowWishlistModal(false)} className="close-button">&times;</button>
-                    </div>
-                    <div className="modal-body">
-                        <label htmlFor="wishlistItemName">Name:</label>
-                        <input
-                            type="text"
-                            id="wishlistItemName"
-                            value={wishlistItemName}
-                            onChange={(e) => setWishlistItemName(e.target.value)}
-                            placeholder="Enter name"
-                        />
-                        <label htmlFor="interestTag">Interest Tag:</label>
-                        <select
-                            id="interestTag"
-                            value={selectedInterest}
-                            onChange={(e) => setSelectedInterest(e.target.value)}
-                        >
-                            <option value="">Select interest</option>
-                            {profileData.interests.map((interest, index) => (
-                                <option key={index} value={interest}>
-                                    {interest}
-                                </option>
-                            ))}
-                        </select>
-                        <label htmlFor="wishlistItemDescription">Description:</label>
-                        <textarea
-                            id="wishlistItemDescription"
-                            value={wishlistItemDescription}
-                            onChange={(e) => setWishlistItemDescription(e.target.value)}
-                            placeholder="Enter description"
-                        />
-                    </div>
-                    <div className="modal-footer">
-                        <button onClick={handleAddWishlistItem} className="save-button">Add Item</button>
-                    </div>
-                </div>
+{showAllInterests && (
+    <div className="modal">
+        <div className="modal-content">
+            <div className="modal-header">
+                <span className="modal-title">View All Interests</span>
+                <button onClick={viewInterests} className="close-button">&times;</button>
             </div>
-        )}
+            <div className="modal-body">
+                {allInterests.length > 0 ? (
+                    allInterests.map((interest, index) => (
+                        <div key={index}>{interest}</div>
+                    ))
+                ) : (
+                    <p>No interests found.</p>
+                )}
+            </div>
+        </div>
+    </div>
+)}
+
         </div>
         </div>
     );

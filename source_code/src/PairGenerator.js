@@ -33,10 +33,7 @@ export default function PairGenerator(){
 
     return (
         <div>
-          <div style={{ position: 'absolute', top: '50px', left: '20px' }}> 
-
-<Menubar />
-</div>
+        <Menubar />
         <h1>User Pairing Generator</h1>
         <button onClick={pairUsers}>Pair Users</button>
         {pairs.map((pair, index) => (

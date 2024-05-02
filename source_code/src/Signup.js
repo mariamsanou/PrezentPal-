@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Menubar from './Menubar';
+import defaultProfile from './defaultProfile.png'; 
 import './Signup.css';
 
 function Signup() {
@@ -56,10 +57,10 @@ function Signup() {
             const profileValues = {
                 userID, // Link profile to user
                 bio: '', // Empty bio to start with
-                profilePicture: '', // No initial picture
+                profilePicture: defaultProfile, // No initial picture
                 // Initialize other IDs as null or handle them based on your application logic
                 wishlistID: null,
-                interestID: null,
+                interestID: [],
                 eventID: null,
                 budgetID: null,
                 deadlineID: null
